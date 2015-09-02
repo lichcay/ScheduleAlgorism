@@ -1,4 +1,4 @@
-package com.cyt.common.jw.service.impl.jx;
+ï»¿package com.cyt.common.jw.service.impl.jx;
 
 
 import java.text.DecimalFormat;
@@ -55,7 +55,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
     private int cCConf = 0;
 
 
-    // --------------------------------------------²âÊÔÓÃÊı¾İSTART------------------------------------------------------------
+    // --------------------------------------------æµ‹è¯•ç”¨æ•°æ®START------------------------------------------------------------
 
 
     // ----------------------------------------------END---------------------------------------------------------------------
@@ -66,12 +66,12 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             int tmpadvConf, int tmpcCConf, UserInfo userInfo) {
 
 
-        // ------------------×¼±¸»ù´¡Êı¾İ---------------------------------
+        // ------------------å‡†å¤‡åŸºç¡€æ•°æ®---------------------------------
         advConf = tmpadvConf;
         cCConf = tmpcCConf;
         EduXn eduXn = xnXqService.getCurrentXn(userInfo.getSchoolId());
         EduXq eduXq = xnXqService.getCurrentXq(userInfo.getSchoolId());
-        // Äê¼¶ID-Äê¼¶ Ó³Éä & Äê¼¶ID List & °à¼¶ÁĞ±í
+        // å¹´çº§ID-å¹´çº§ æ˜ å°„ & å¹´çº§ID List & ç­çº§åˆ—è¡¨
         Map<String, EduGrade> gradeAndGradeId = new HashMap<String, EduGrade>();
         String[] gradeIdList = new String[scheduleGrade.size()];
         List<EduClass> scheduleClass = new ArrayList<EduClass>();
@@ -80,21 +80,21 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             gradeIdList[i] = scheduleGrade.get(i).getGradeId();
             scheduleClass.addAll(scheduleGrade.get(i).getClassList());
         }
-        // ¿Î³ÌList
+        // è¯¾ç¨‹List
         List<Code> courseList = listCourse(userInfo);
-        // Äê¼¶£­¿Î³Ì£­¶àÉÙ°àÓĞMAP
+        // å¹´çº§ï¼è¯¾ç¨‹ï¼å¤šå°‘ç­æœ‰MAP
         Map<EduGrade, Map<String, Integer>> classHasCourse = getGradeClassHasClassNum(gradeIdList, userInfo);
-        // Äê¼¶ID List ²éÑ¯Ìõ¼ş
+        // å¹´çº§ID List æŸ¥è¯¢æ¡ä»¶
         CoursePlanQueryInfo queryInfo = new CoursePlanQueryInfo();
         queryInfo.setRemoveTag(0);
         queryInfo.setGradeIdList(gradeIdList);
         queryInfo.setXnId(xnXqService.getCurrentXn(userInfo.getSchoolId()).getXnId());
         queryInfo.setXqId(xnXqService.getCurrentXq(userInfo.getSchoolId()).getXqId());
-        // ¸ù¾İÅÅ¿ÎÄê¼¶»ñµÃÖ®Ç°ÉèÖÃµÄ°à¼¶¿Î³Ì½ÌÊ¦ĞÅÏ¢
+        // æ ¹æ®æ’è¯¾å¹´çº§è·å¾—ä¹‹å‰è®¾ç½®çš„ç­çº§è¯¾ç¨‹æ•™å¸ˆä¿¡æ¯
         List<CourseTeacher> scheduleJoint = coursePlanService.listCourseTeacher(queryInfo);
-        // »ñµÃ½ÌÊ¦ĞÅÏ¢
+        // è·å¾—æ•™å¸ˆä¿¡æ¯
         List<EduStaff> scheduleStaff = coursePlanService.listTeacher(queryInfo);
-        // ½ÌÊ¦-Ëù´ø°à¼¶Ó³Éä
+        // æ•™å¸ˆ-æ‰€å¸¦ç­çº§æ˜ å°„
         Map<EduStaff, List<EduClass>> teacherClass = new HashMap<EduStaff, List<EduClass>>();
         for (int i = 0; i < scheduleStaff.size(); i++) {
             CoursePlanQueryInfo tempqueryInfo = new CoursePlanQueryInfo();
@@ -103,16 +103,16 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             List<EduClass> thisTeacherClass = coursePlanService.listTeacherClass(tempqueryInfo);
             teacherClass.put(scheduleStaff.get(i), thisTeacherClass);
         }
-        // ½ÌÊ¦ÈËÊı
+        // æ•™å¸ˆäººæ•°
         int teacherNum = scheduleStaff.size();
-        // ÀíÏëµÃ·Ö
+        // ç†æƒ³å¾—åˆ†
         int idealScore = teacherNum + 1;
-        // °à¼¶-°à¼¶IDÓ³Éä
+        // ç­çº§-ç­çº§IDæ˜ å°„
         Map<String, EduClass> classAndClassId = new HashMap<String, EduClass>();
         for (int i = 0; i < scheduleClass.size(); i++) {
             classAndClassId.put(scheduleClass.get(i).getClassId(), scheduleClass.get(i));
         }
-        // ½¨Á¢°à¼¶ÅÅ¿Î²ÎÊıÓ³Éä
+        // å»ºç«‹ç­çº§æ’è¯¾å‚æ•°æ˜ å°„
         Map<EduClass, ClassScheduleConf> scheduleConf = new HashMap<EduClass, ClassScheduleConf>();
         for (int i = 0; i < scheduleGrade.size(); i++) {
             List<EduClass> tempGradeClassList = scheduleGrade.get(i).getClassList();
@@ -120,7 +120,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                 EduClass thisClass = tempGradeClassList.get(j);
                 ClassScheduleConf tempScheduleConf = new ClassScheduleConf();
                 queryInfo.setClassId(thisClass.getClassId());
-                // »ñÈ¡¸Ã°à¼¶ÏÂ¿Î³Ì
+                // è·å–è¯¥ç­çº§ä¸‹è¯¾ç¨‹
                 List<CourseTeacher> thisClassCoursePlan = coursePlanService.listCourseTeacher(queryInfo);
                 Map<Integer, Integer> thisCourseTime = new HashMap<Integer, Integer>();
                 for (int k = 0; k < thisClassCoursePlan.size(); k++) {
@@ -131,11 +131,11 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                 }
                 tempScheduleConf.courseTime = thisCourseTime;
                 tempScheduleConf.haveClass = mapGradeHaveCourseTime.get(scheduleGrade.get(i));
-                // °à¼¶¿Î³Ì³ØÓ³Éä
+                // ç­çº§è¯¾ç¨‹æ± æ˜ å°„
                 List<String> coursePool = new ArrayList<String>();
-                // ³õÊ¼»¯¿Î³Ì³Ø¼ÆÊı
+                // åˆå§‹åŒ–è¯¾ç¨‹æ± è®¡æ•°
                 int coursePoolCount = 0;
-                // Ïò¿Î³Ì³ØÖĞÌí¼Ó¿Î³Ì
+                // å‘è¯¾ç¨‹æ± ä¸­æ·»åŠ è¯¾ç¨‹
                 for (int courseCount = 0; courseCount < thisClassCoursePlan.size(); courseCount++) {
                     for (int m = 0; m < thisCourseTime.get(thisClassCoursePlan.get(courseCount).getCoursePlan()
                             .getCourseCode()); m++) {
@@ -148,22 +148,22 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                 scheduleConf.put(thisClass, tempScheduleConf);
             }
         }
-        // -------------------¸ß¼¶ÅÅ¿Î------------------------------
+        // -------------------é«˜çº§æ’è¯¾------------------------------
 
 
         List<EduStaff> specialTeacher = new ArrayList<EduStaff>();
         specialTeacher.addAll(scheduleStaff);
-        // »ñÈ¡scheduleStaffÓë£¨groupStaffCourseTimeµÄkey£©µÄ½»¼¯£¬¼´¼ÈÔÚ½ÌÑĞ×é£¬ÓÖÓĞÅÅ¿Î°²ÅÅµÄ½ÌÊ¦
+        // è·å–scheduleStaffä¸ï¼ˆgroupStaffCourseTimeçš„keyï¼‰çš„äº¤é›†ï¼Œå³æ—¢åœ¨æ•™ç ”ç»„ï¼Œåˆæœ‰æ’è¯¾å®‰æ’çš„æ•™å¸ˆ
         List<EduStaff> staffWithConf = new ArrayList<EduStaff>(groupStaffCourseTime.keySet());
         specialTeacher.retainAll(staffWithConf);
-        // ÀíÏëµÃ·Ö
+        // ç†æƒ³å¾—åˆ†
         int advTotalScore = specialTeacher.size() + 1;
         if (advConf == 1) {
             idealScore = idealScore + advTotalScore;
         }
 
 
-        // ------------------ÁªÌÃ¿Î--------------------------------
+        // ------------------è”å ‚è¯¾--------------------------------
         if (cCConf == 1) {
             int ccScore = 1;
             for (int i = 0; i < scheduleGrade.size(); i++) {
@@ -178,17 +178,17 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         }
 
 
-        // ------------------ĞÂ½¨ÖÖÈº------------------------------
+        // ------------------æ–°å»ºç§ç¾¤------------------------------
         List<Individual> population = new ArrayList<Individual>();
 
 
-        // ÏòÖÖÈºÖĞ¼ÓÈë100¸ö³õÊ¼¸öÌå
+        // å‘ç§ç¾¤ä¸­åŠ å…¥100ä¸ªåˆå§‹ä¸ªä½“
         for (int individualNum = 0; individualNum < 100; individualNum++) {
 
 
             Individual indi = newindi(scheduleGrade, scheduleConf, scheduleJoint, scheduleStaff, specialTeacher,
                     groupStaffCourseTime, gradeAndGradeId, gradeCoupletCourse, courseList, classHasCourse);
-            // ½«¸öÌåÖÃÈëÖÖÈº
+            // å°†ä¸ªä½“ç½®å…¥ç§ç¾¤
             population.add(individualNum, indi);
         }
 
@@ -373,7 +373,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
     }
 
 
-    // ÒÔÏÂÎªÅÅ¿ÎË½ÓĞ·½·¨---------------------------------------------------------------------------------------------------------------
+    // ä»¥ä¸‹ä¸ºæ’è¯¾ç§æœ‰æ–¹æ³•---------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -382,34 +382,34 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             Map<EduStaff, String> groupStaffCourseTime, Map<String, EduGrade> gradeAndGradeId,
             Map<EduGrade, Map<String, Integer>> gradeCoupletCourse, List<Code> courseList,
             Map<EduGrade, Map<String, Integer>> classHasCourse) {
-        // ĞÂ½¨¸öÌå
+        // æ–°å»ºä¸ªä½“
         Individual indi = new Individual();
-        // ĞÂ½¨ÅÅ¿Î¼Æ»®
+        // æ–°å»ºæ’è¯¾è®¡åˆ’
         indi.schedulePlan = new GradeSchedule[scheduleGrade.size()];
-        // Ìî³äÅÅ¿Î¼Æ»®
+        // å¡«å……æ’è¯¾è®¡åˆ’
         for (int gradeCount = 0; gradeCount < scheduleGrade.size(); gradeCount++) {
-            // ĞÂ½¨Äê¼¶¼Æ»®
+            // æ–°å»ºå¹´çº§è®¡åˆ’
             GradeSchedule gradeSchedule = new GradeSchedule();
-            // »ñµÃÄê¼¶
+            // è·å¾—å¹´çº§
             EduGrade thisGrade = scheduleGrade.get(gradeCount);
-            // ÉèÖÃÄê¼¶ID
+            // è®¾ç½®å¹´çº§ID
             gradeSchedule.gradeId = thisGrade.getGradeId();
-            // »ñµÃÄê¼¶ÏÂ°à¼¶
+            // è·å¾—å¹´çº§ä¸‹ç­çº§
             List<EduClass> thisClass = thisGrade.getClassList();
-            // new°à¼¶¼Æ»®Êı×é
+            // newç­çº§è®¡åˆ’æ•°ç»„
             gradeSchedule.classSchedule = new ClassSchedule[thisClass.size()];
-            // Ìî³ä°à¼¶¼Æ»®
+            // å¡«å……ç­çº§è®¡åˆ’
             for (int classCount = 0; classCount < thisClass.size(); classCount++) {
                 ClassSchedule classSchedule = new ClassSchedule();
-                // »ñµÃ°à¼¶ÅÅ¿ÎÉèÖÃ
+                // è·å¾—ç­çº§æ’è¯¾è®¾ç½®
                 ClassScheduleConf thisScheduleConf = scheduleConf.get(thisClass.get(classCount));
-                // »ñµÃ°à¼¶¿Î³Ì³Ø
+                // è·å¾—ç­çº§è¯¾ç¨‹æ± 
                 List<String> thisCoursePool = thisScheduleConf.coursePool;
-                // ÉèÖÃ¿Î³Ì³Ø¼ÆÊı
+                // è®¾ç½®è¯¾ç¨‹æ± è®¡æ•°
                 int coursePoolCount = 0;
-                // ´òÂÒ¿Î³Ì³Ø
+                // æ‰“ä¹±è¯¾ç¨‹æ± 
                 Collections.shuffle(thisCoursePool);
-                // °´ÕÕ Ìì-½Ú Ñ­»·´Ó´òÂÒµÄ¿Î³Ì³ØÖĞ»ñÈ¡¿Î³Ì£¬·ÅÈë¶ÔÏóÖĞ
+                // æŒ‰ç…§ å¤©-èŠ‚ å¾ªç¯ä»æ‰“ä¹±çš„è¯¾ç¨‹æ± ä¸­è·å–è¯¾ç¨‹ï¼Œæ”¾å…¥å¯¹è±¡ä¸­
                 for (int day = 0; day < DAY_COUNT; day++) {
                     DaySchedule daySchedule = new DaySchedule();
                     for (int lectureNum = 0; lectureNum < LECTURE_COUNT; lectureNum++) {
@@ -430,7 +430,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                 indi.schedulePlan[gradeCount] = gradeSchedule;
             }
         }
-        // ¼ÆËãÊÊÓ¦¶ÈµÃ·Ö
+        // è®¡ç®—é€‚åº”åº¦å¾—åˆ†
         indi.score = calculateScore(indi.schedulePlan, scheduleJoint, scheduleStaff);
         if (advConf == 1) {
             indi.score = indi.score
@@ -446,7 +446,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ½ø»¯
+     * è¿›åŒ–
      * 
      * @param population
      * @param scheduleConf
@@ -466,41 +466,41 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             Map<EduStaff, List<EduClass>> teacherClass, List<EduGrade> scheduleGrade, List<EduStaff> specialTeacher,
             Map<EduStaff, String> groupStaffCourseTime, Map<EduGrade, Map<String, Integer>> gradeCoupletCourse,
             List<Code> courseList, Map<EduGrade, Map<String, Integer>> classHasCourse) {
-        // ÖÕÖ¹±êÊ¶
+        // ç»ˆæ­¢æ ‡è¯†
         int finalFlag = 0;
-        // ÖÕ¼«¸öÌåÎ»ÖÃ
+        // ç»ˆæä¸ªä½“ä½ç½®
         int finalIndiNum = 0;
-        // µü´ú´ÎÊı
+        // è¿­ä»£æ¬¡æ•°
         int iterationNum = 0;
-        // ÖÖÈº×ÜµÃ·Ö
+        // ç§ç¾¤æ€»å¾—åˆ†
         int sumScore = 0;
-        // Ñ­»·¿ªÊ¼Ê±¼ä
+        // å¾ªç¯å¼€å§‹æ—¶é—´
         // long startTime = System.currentTimeMillis();
-        // Ñ­»·×î³¤Ê±¼ä
+        // å¾ªç¯æœ€é•¿æ—¶é—´
         // long limitTime = startTime + 300000;
-        // ¿ªÊ¼Ñ­»·
+        // å¼€å§‹å¾ªç¯
         while (finalFlag != 1) {
-            // ÏÖÔÚÊ±¼ä
+            // ç°åœ¨æ—¶é—´
             // long endTime = System.currentTimeMillis();
-            // Èô¼ÆËãÊ±¼ä³¬¹ı×î³¤Ê±¼ä£¬ÔòÌø³ö
+            // è‹¥è®¡ç®—æ—¶é—´è¶…è¿‡æœ€é•¿æ—¶é—´ï¼Œåˆ™è·³å‡º
             // if (endTime > limitTime) {
             // return null;
             // }
-            // ÖÖÈº×ÜµÃ·ÖÖÃÁã
+            // ç§ç¾¤æ€»å¾—åˆ†ç½®é›¶
             sumScore = 0;
-            // µü´ú´ÎÊı×ÔÔö
+            // è¿­ä»£æ¬¡æ•°è‡ªå¢
             iterationNum++;
-            System.out.print("µÚ" + iterationNum + "´Îµü´ú");
-            // ³åÍ»¼ì²â/ÅÅ³ı ³åÍ»ÎŞ·¨½â¾öÔòÌÔÌ­¸öÌå£¬Éú³ÉĞÂËæ»ú¸öÌåÌæ´ú
+            System.out.print("ç¬¬" + iterationNum + "æ¬¡è¿­ä»£");
+            // å†²çªæ£€æµ‹/æ’é™¤ å†²çªæ— æ³•è§£å†³åˆ™æ·˜æ±°ä¸ªä½“ï¼Œç”Ÿæˆæ–°éšæœºä¸ªä½“æ›¿ä»£
             for (int i = 0; i < 100; i++) {
                 Individual tIndi = population.get(i);
                 GradeSchedule[] newGS = conflictResolution(tIndi.schedulePlan, scheduleJoint, scheduleStaff,
                         teacherClass, classAndClassId, scheduleConf);
-                // Èô³åÍ»½â¾ö£¬ÔòÓÃ½â¾öºóµÄÌæ»»Ö®
+                // è‹¥å†²çªè§£å†³ï¼Œåˆ™ç”¨è§£å†³åçš„æ›¿æ¢ä¹‹
                 if (newGS != null) {
                     tIndi.schedulePlan = newGS;
                 }
-                // ·ñÔòÉú³ÉĞÂµÄËæ»ú¸öÌåÌæ»»Ö®
+                // å¦åˆ™ç”Ÿæˆæ–°çš„éšæœºä¸ªä½“æ›¿æ¢ä¹‹
                 else {
 
 
@@ -511,11 +511,11 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                 if (advConf == 1) {
                     newGS = extraConflictResolution(tIndi.schedulePlan, scheduleJoint, scheduleStaff, specialTeacher,
                             groupStaffCourseTime, classAndClassId, teacherClass, scheduleConf);
-                    // Èô³åÍ»½â¾ö£¬ÔòÓÃ½â¾öºóµÄÌæ»»Ö®
+                    // è‹¥å†²çªè§£å†³ï¼Œåˆ™ç”¨è§£å†³åçš„æ›¿æ¢ä¹‹
                     if (newGS != null) {
                         tIndi.schedulePlan = newGS;
                     }
-                    // ·ñÔòÉú³ÉĞÂµÄËæ»ú¸öÌåÌæ»»Ö®
+                    // å¦åˆ™ç”Ÿæˆæ–°çš„éšæœºä¸ªä½“æ›¿æ¢ä¹‹
                     else {
                         tIndi = newindi(scheduleGrade, scheduleConf, scheduleJoint, scheduleStaff, specialTeacher,
                                 groupStaffCourseTime, gradeAndGradeId, gradeCoupletCourse, courseList, classHasCourse);
@@ -525,17 +525,17 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                     newGS = ccConflictResolution(tIndi.schedulePlan, gradeAndGradeId, gradeCoupletCourse,
                             scheduleGrade, classAndClassId, scheduleJoint, scheduleStaff, scheduleConf, courseList,
                             advConf, groupStaffCourseTime);
-                    // Èô³åÍ»½â¾ö£¬ÔòÓÃ½â¾öºóµÄÌæ»»Ö®
+                    // è‹¥å†²çªè§£å†³ï¼Œåˆ™ç”¨è§£å†³åçš„æ›¿æ¢ä¹‹
                     if (newGS != null) {
                         tIndi.schedulePlan = newGS;
                     }
-                    // ·ñÔòÉú³ÉĞÂµÄËæ»ú¸öÌåÌæ»»Ö®
+                    // å¦åˆ™ç”Ÿæˆæ–°çš„éšæœºä¸ªä½“æ›¿æ¢ä¹‹
                     else {
                         tIndi = newindi(scheduleGrade, scheduleConf, scheduleJoint, scheduleStaff, specialTeacher,
                                 groupStaffCourseTime, gradeAndGradeId, gradeCoupletCourse, courseList, classHasCourse);
                     }
                 }
-                // ¼ÆËãÊÊÓ¦¶ÈµÃ·Ö
+                // è®¡ç®—é€‚åº”åº¦å¾—åˆ†
                 tIndi.score = calculateScore(tIndi.schedulePlan, scheduleJoint, scheduleStaff);
                 if (advConf == 1) {
                     tIndi.score = tIndi.score
@@ -548,22 +548,22 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                 }
                 population.set(i, tIndi);
             }
-            // ½»Åä²úÉúºó´ú
+            // äº¤é…äº§ç”Ÿåä»£
             population = mating(population, 20, 1, scheduleConf, scheduleClass, scheduleJoint, idealScore,
                     scheduleStaff, gradeAndGradeId, classAndClassId, specialTeacher, groupStaffCourseTime,
                     gradeCoupletCourse, scheduleGrade, courseList, classHasCourse);
-            // ±äÒì
+            // å˜å¼‚
             population = mutation(population, (float) 0.005, scheduleClass, scheduleJoint, idealScore, scheduleStaff,
                     scheduleConf, gradeAndGradeId, classAndClassId, specialTeacher, groupStaffCourseTime,
                     gradeCoupletCourse, scheduleGrade, courseList, classHasCourse);
-            // ÅĞ¶Ï¸öÌåÊÇ·ñ´ï±ê
+            // åˆ¤æ–­ä¸ªä½“æ˜¯å¦è¾¾æ ‡
             for (int i = 0; i < 100; i++) {
                 sumScore = sumScore + population.get(i).score;
-                // ¸öÌåµÃ·ÖµÈÓÚÆÚÍûµÃ·Ö£¬ÔòÖÕÖ¹±êÊ¶ÖÃÎª1
+                // ä¸ªä½“å¾—åˆ†ç­‰äºæœŸæœ›å¾—åˆ†ï¼Œåˆ™ç»ˆæ­¢æ ‡è¯†ç½®ä¸º1
                 if (population.get(i).score == idealScore) {
-                    // ÖÕÖ¹±êÊ¶ÖÃÎª1
+                    // ç»ˆæ­¢æ ‡è¯†ç½®ä¸º1
                     finalFlag = 1;
-                    // »ñµÃ×îÖÕ¸öÌåµÄ±àºÅ
+                    // è·å¾—æœ€ç»ˆä¸ªä½“çš„ç¼–å·
                     finalIndiNum = i;
                 }
 
@@ -571,7 +571,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             }
 
 
-            System.out.println(" Æ½¾ù·Ö£º" + sumScore / 100);
+            System.out.println(" å¹³å‡åˆ†ï¼š" + sumScore / 100);
         }
 
 
@@ -623,7 +623,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ½»Åä£¨¾«Ó¢¸öÌå±£Áô£©
+     * äº¤é…ï¼ˆç²¾è‹±ä¸ªä½“ä¿ç•™ï¼‰
      * 
      * @date 2015-6-24
      * @return List<Individual>
@@ -637,7 +637,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             List<Code> courseList, Map<EduGrade, Map<String, Integer>> classHasCourse) {
 
 
-        // »ñµÃ¾«Ó¢¸öÌå
+        // è·å¾—ç²¾è‹±ä¸ªä½“
         Individual[] elite = new Individual[5];
         int eliteScore = 0;
         for (int i = 0; i < 100; i++) {
@@ -676,8 +676,8 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         }
 
 
-        // Í¨¹ıÂÖÅÌ¶Ä»ñµÃ¸¸Ä¸
-        // ³õÊ¼»¯ÂÖÅÌ¶ÄÂÖÅÌ
+        // é€šè¿‡è½®ç›˜èµŒè·å¾—çˆ¶æ¯
+        // åˆå§‹åŒ–è½®ç›˜èµŒè½®ç›˜
         int totalValue = 0;
         for (int i = 0; i < 100; i++) {
             totalValue = totalValue + population.get(i).score;
@@ -686,7 +686,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         for (int i = 0; i < 100; i++) {
             disk[i] = (float) (population.get(i).score) / (float) totalValue;
         }
-        // ½øĞĞmatingNum´ÎÂÖÅÌ¶Ä
+        // è¿›è¡ŒmatingNumæ¬¡è½®ç›˜èµŒ
         List<Individual> selected = new ArrayList<Individual>();
         for (int i = 0; i < matingNum; i++) {
             Random rand = new Random();
@@ -702,9 +702,9 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             }
             selected.add(i, population.get(j));
         }
-        // ´´½¨ĞÂ³öÉú¸öÌåList
+        // åˆ›å»ºæ–°å‡ºç”Ÿä¸ªä½“List
         List<Individual> newBorn = new ArrayList<Individual>();
-        // ¶ÔËæ»úµÄÄ³¸öÄê¼¶½øĞĞmatingLength³¤¶ÈµÄ½»Åä
+        // å¯¹éšæœºçš„æŸä¸ªå¹´çº§è¿›è¡ŒmatingLengthé•¿åº¦çš„äº¤é…
         for (int i = 0; i < matingNum; i++) {
             Individual oldIndiA = new Individual();
             Individual oldIndiB = new Individual();
@@ -752,8 +752,8 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             }
             newBorn.add(i, newIndi);
         }
-        // Í¨¹ıÂÖÅÌ¶ÄÌæ»»¸öÌå
-        // ³õÊ¼»¯ÂÖÅÌ¶ÄÂÖÅÌ
+        // é€šè¿‡è½®ç›˜èµŒæ›¿æ¢ä¸ªä½“
+        // åˆå§‹åŒ–è½®ç›˜èµŒè½®ç›˜
         totalValue = 0;
         for (int i = 0; i < 100; i++) {
             totalValue = totalValue + (idealScore - population.get(i).score);
@@ -762,7 +762,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         for (int i = 0; i < 100; i++) {
             newDisk[i] = (float) (idealScore - population.get(i).score) / (float) totalValue;
         }
-        // ½øĞĞmatingNum´ÎÂÖÅÌ¶Ä
+        // è¿›è¡ŒmatingNumæ¬¡è½®ç›˜èµŒ
         int[] deleted = new int[matingNum];
         for (int i = 0; i < matingNum; i++) {
             Random rand = new Random();
@@ -785,7 +785,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         }
 
 
-        // »ñµÃ·ÖÊı×îµÍ¸öÌåĞòºÅ
+        // è·å¾—åˆ†æ•°æœ€ä½ä¸ªä½“åºå·
         int worestScore = 9999;
         int worestNum[] = new int[5];
         for (int i = 0; i < 100; i++) {
@@ -826,7 +826,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                 worestNum[4] = i;
             }
         }
-        // ÓÃ¾«Ó¢¸öÌåÌæ»»×î²î¸öÌå
+        // ç”¨ç²¾è‹±ä¸ªä½“æ›¿æ¢æœ€å·®ä¸ªä½“
         for (int i = 0; i < 5; i++) {
             population.set(worestNum[i], elite[i]);
         }
@@ -835,7 +835,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ÖÖÈº±äÒì
+     * ç§ç¾¤å˜å¼‚
      * 
      * @date 2015-6-26
      * @param population
@@ -889,7 +889,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                     tempIndividual.schedulePlan[gradeCount].classSchedule = tempGradeSchedule;
                 }
             }
-            // ¼ÆËãÊÊÓ¦¶ÈµÃ·Ö
+            // è®¡ç®—é€‚åº”åº¦å¾—åˆ†
             tempIndividual.score = calculateScore(tempIndividual.schedulePlan, scheduleJoint, scheduleStaff);
             if (advConf == 1) {
                 tempIndividual.score = tempIndividual.score
@@ -909,7 +909,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ¸ù¾İCode»ñÈ¡°à¼¶ÅÅ¿ÎÉèÖÃ
+     * æ ¹æ®Codeè·å–ç­çº§æ’è¯¾è®¾ç½®
      * 
      * @date 2015-7-2
      * @param geneticCode
@@ -922,7 +922,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             Map<EduClass, ClassScheduleConf> scheduleConf, EduClass thisClass) {
 
 
-        // »ñµÃÄê¼¶ÅÅ¿ÎÉèÖÃ
+        // è·å¾—å¹´çº§æ’è¯¾è®¾ç½®
         ClassScheduleConf thisScheduleConf = scheduleConf.get(thisClass);
         DaySchedule[] tempDaySchedule = new DaySchedule[DAY_COUNT];
         int geneticCodeCount = 0;
@@ -946,7 +946,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * Í¨¹ıclassId courseId »ñÈ¡EduStaff
+     * é€šè¿‡classId courseId è·å–EduStaff
      * 
      * @date 2015-6-23
      * @param classId
@@ -970,7 +970,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ¼ÆËã¸öÌåÊÊÓ¦µÃ·Ö
+     * è®¡ç®—ä¸ªä½“é€‚åº”å¾—åˆ†
      * 
      * @date 2015-6-23
      * @param individual
@@ -981,10 +981,10 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
         int totalScore = 1;
-        // ÅĞ¶Ï½ÌÊ¦ÊÇ·ñÖØ¸´ÉÏ¿Î
+        // åˆ¤æ–­æ•™å¸ˆæ˜¯å¦é‡å¤ä¸Šè¯¾
 
 
-        // Í³¼Æ½ÌÊ¦Ã¿¸öÊ±¼ä¶ÎÉÏ¿ÎÊı
+        // ç»Ÿè®¡æ•™å¸ˆæ¯ä¸ªæ—¶é—´æ®µä¸Šè¯¾æ•°
         Map<EduStaff, int[][]> staffDuplicateCourse = new HashMap<EduStaff, int[][]>();
         for (int staffNum = 0; staffNum < scheduleStaff.size(); staffNum++) {
             int[][] a = new int[DAY_COUNT][LECTURE_COUNT];
@@ -1016,10 +1016,10 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         }
 
 
-        // ³õÊ¼»¯½ÌÊ¦ÖØ¸´ÉÏ¿Î±êÖ¾
+        // åˆå§‹åŒ–æ•™å¸ˆé‡å¤ä¸Šè¯¾æ ‡å¿—
         int teacherOverTeachFlag = 0;
         for (int staffNum = 0; staffNum < scheduleStaff.size(); staffNum++) {
-            // ±êÖ¾ÖÃÁã
+            // æ ‡å¿—ç½®é›¶
             teacherOverTeachFlag = 0;
             int[][] a = staffDuplicateCourse.get(scheduleStaff.get(staffNum));
             for (int j = 0; j < DAY_COUNT; j++) {
@@ -1042,7 +1042,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
     /**
      * 
-     * ¸öÌå¸ß¼¶ÉèÖÃ³åÍ»¼ì²âÅÅ³ı
+     * ä¸ªä½“é«˜çº§è®¾ç½®å†²çªæ£€æµ‹æ’é™¤
      * 
      * @date 2015-6-23
      * @param individual
@@ -1056,7 +1056,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             Map<EduClass, ClassScheduleConf> scheduleConf) {
 
 
-        // Í³¼ÆÒªÇóµÄ½ÌÊ¦Ã¿¸öÊ±¼ä¶ÎÉÏ¿ÎÊı
+        // ç»Ÿè®¡è¦æ±‚çš„æ•™å¸ˆæ¯ä¸ªæ—¶é—´æ®µä¸Šè¯¾æ•°
         Map<EduStaff, int[][]> staffDuplicateCourse = new HashMap<EduStaff, int[][]>();
 
 
@@ -1090,7 +1090,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                 }
             }
         }
-        // Í³¼ÆËùÓĞ½ÌÊ¦Ã¿¸öÊ±¼ä¶ÎÉÏ¿ÎÊı
+        // ç»Ÿè®¡æ‰€æœ‰æ•™å¸ˆæ¯ä¸ªæ—¶é—´æ®µä¸Šè¯¾æ•°
         Map<EduStaff, Map<String, List<EduClass>>> allStaffDuplicateCourse = new HashMap<EduStaff, Map<String, List<EduClass>>>();
         for (int staffNum = 0; staffNum < scheduleStaff.size(); staffNum++) {
             Map<String, List<EduClass>> tempMap = new HashMap<String, List<EduClass>>();
@@ -1122,7 +1122,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         }
 
 
-        // »ñµÃÃ¿¸öÊ±¼ä¶Î¿ÕÏĞ½ÌÊ¦
+        // è·å¾—æ¯ä¸ªæ—¶é—´æ®µç©ºé—²æ•™å¸ˆ
         Map<String, List<EduStaff>> freeTeacher = new HashMap<String, List<EduStaff>>();
 
 
@@ -1157,7 +1157,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
         }
-        // ¼ì²âÊÇ·ñ·ûºÏÒªÇó
+        // æ£€æµ‹æ˜¯å¦ç¬¦åˆè¦æ±‚
 
 
         for (int i = 0; i < specialTeacher.size(); i++) {
@@ -1170,41 +1170,41 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
                     if (tmpSchedule[dayConf - 1][j] != 0) {
-                        // »ñÈ¡ÕâÊÇÄÄ¸ö°àµÄ¿Î
+                        // è·å–è¿™æ˜¯å“ªä¸ªç­çš„è¯¾
                         EduClass thisClass = ((allStaffDuplicateCourse.get(specialTeacher.get(i))).get((dayConf - 1)
                                 + "," + Integer.toString(j))).get(0);
-                        // »ñÈ¡¸Ã³åÍ»Ê±¼ä¿ÕÏĞµÄ½ÌÊ¦
+                        // è·å–è¯¥å†²çªæ—¶é—´ç©ºé—²çš„æ•™å¸ˆ
                         List<EduStaff> thisFreeTeacher = freeTeacher.get((dayConf - 1) + "," + Integer.toString(j));
-                        // ÉèÖÃ³åÍ»½â¾öflag
+                        // è®¾ç½®å†²çªè§£å†³flag
                         int doneFlag = 0;
-                        // Öğ¸ö¼ì²â¿ÕÏĞ½ÌÊ¦Ëù´ø°à¼¶ÊÇ·ñÓĞ¸Ã°à
+                        // é€ä¸ªæ£€æµ‹ç©ºé—²æ•™å¸ˆæ‰€å¸¦ç­çº§æ˜¯å¦æœ‰è¯¥ç­
                         for (int teacherCount = 0; teacherCount < thisFreeTeacher.size(); teacherCount++) {
                             if (doneFlag == 0) {
-                                // ÈôÎª¸Ã°à½ÌÊ¦
+                                // è‹¥ä¸ºè¯¥ç­æ•™å¸ˆ
                                 if (teacherClass.get(thisFreeTeacher.get(teacherCount)).contains(thisClass)) {
-                                    // »ñÈ¡¸Ã½ÌÊ¦ÉÏ¿Î°²ÅÅMap
+                                    // è·å–è¯¥æ•™å¸ˆä¸Šè¯¾å®‰æ’Map
                                     Map<String, List<EduClass>> otherTeacherCourseList = allStaffDuplicateCourse
                                             .get(thisFreeTeacher.get(teacherCount));
-                                    // »ñÈ¡¸Ã½ÌÊ¦¸Ã°à¼¶µÄÉÏ¿Î°²ÅÅ
+                                    // è·å–è¯¥æ•™å¸ˆè¯¥ç­çº§çš„ä¸Šè¯¾å®‰æ’
                                     List<String> otherTeacherSchedule = new ArrayList<String>();
                                     for (int keyListLength = 0; keyListLength < keyList.length; keyListLength++) {
                                         if (otherTeacherCourseList.get(keyList[keyListLength]).contains(thisClass)) {
                                             otherTeacherSchedule.add(keyList[keyListLength]);
                                         }
                                     }
-                                    // »ñµÃ´ıµ÷¿Î³ÌÊ±¼ä
+                                    // è·å¾—å¾…è°ƒè¯¾ç¨‹æ—¶é—´
                                     Random rand = new Random();
                                     int randCourseNum = rand.nextInt(otherTeacherSchedule.size());
                                     String[] newOrder = otherTeacherSchedule.get(randCourseNum).split(",");
                                     int day = Integer.parseInt(newOrder[0]);
                                     int courseNum = Integer.parseInt(newOrder[1]);
-                                    // »ñµÃ³åÍ»¿Î³ÌÊ±¼ä
+                                    // è·å¾—å†²çªè¯¾ç¨‹æ—¶é—´
                                     String[] oldOrder = { Integer.toString(dayConf - 1), Integer.toString(j) };
                                     int oldDay = Integer.parseInt(oldOrder[0]);
                                     int oldCourseNum = Integer.parseInt(oldOrder[1]);
 
 
-                                    // µ÷»»¿Î³Ì
+                                    // è°ƒæ¢è¯¾ç¨‹
                                     for (int gradeCount = 0; gradeCount < gS.length; gradeCount++) {
                                         if (StringUtil.compareValue(gS[gradeCount].gradeId, thisClass.getNj()
                                                 .getGradeId())) {
@@ -1212,11 +1212,11 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                                                 if (StringUtil.compareValue(
                                                         gS[gradeCount].classSchedule[classCount].classId,
                                                         thisClass.getClassId())) {
-                                                    // ´ıµ÷¿Î³ÌcourseId
+                                                    // å¾…è°ƒè¯¾ç¨‹courseId
                                                     String newCourseId = gS[gradeCount].classSchedule[classCount].daySchedule[day].schedule[courseNum].courseId;
-                                                    // ³åÍ»¿Î³ÌcourseId
+                                                    // å†²çªè¯¾ç¨‹courseId
                                                     String oldCourseId = gS[gradeCount].classSchedule[classCount].daySchedule[oldDay].schedule[oldCourseNum].courseId;
-                                                    // ¶Ôµ÷
+                                                    // å¯¹è°ƒ
                                                     gS[gradeCount].classSchedule[classCount].daySchedule[day].schedule[courseNum].courseId = oldCourseId;
                                                     gS[gradeCount].classSchedule[classCount].daySchedule[oldDay].schedule[oldCourseNum].courseId = newCourseId;
                                                     gS[gradeCount].classSchedule[classCount].code = generateCode(
@@ -1245,41 +1245,41 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             else if (timeSequence == 2) {
                 for (int j = 4; j < 8; j++) {
                     if (tmpSchedule[dayConf - 1][j] != 0) {
-                        // »ñÈ¡ÕâÊÇÄÄ¸ö°àµÄ¿Î
+                        // è·å–è¿™æ˜¯å“ªä¸ªç­çš„è¯¾
                         EduClass thisClass = ((allStaffDuplicateCourse.get(specialTeacher.get(i))).get((dayConf - 1)
                                 + "," + Integer.toString(j))).get(0);
-                        // »ñÈ¡¸Ã³åÍ»Ê±¼ä¿ÕÏĞµÄ½ÌÊ¦
+                        // è·å–è¯¥å†²çªæ—¶é—´ç©ºé—²çš„æ•™å¸ˆ
                         List<EduStaff> thisFreeTeacher = freeTeacher.get((dayConf - 1) + "," + Integer.toString(j));
-                        // ÉèÖÃ³åÍ»½â¾öflag
+                        // è®¾ç½®å†²çªè§£å†³flag
                         int doneFlag = 0;
-                        // Öğ¸ö¼ì²â¿ÕÏĞ½ÌÊ¦Ëù´ø°à¼¶ÊÇ·ñÓĞ¸Ã°à
+                        // é€ä¸ªæ£€æµ‹ç©ºé—²æ•™å¸ˆæ‰€å¸¦ç­çº§æ˜¯å¦æœ‰è¯¥ç­
                         for (int teacherCount = 0; teacherCount < thisFreeTeacher.size(); teacherCount++) {
                             if (doneFlag == 0) {
-                                // ÈôÎª¸Ã°à½ÌÊ¦
+                                // è‹¥ä¸ºè¯¥ç­æ•™å¸ˆ
                                 if (teacherClass.get(thisFreeTeacher.get(teacherCount)).contains(thisClass)) {
-                                    // »ñÈ¡¸Ã½ÌÊ¦ÉÏ¿Î°²ÅÅMap
+                                    // è·å–è¯¥æ•™å¸ˆä¸Šè¯¾å®‰æ’Map
                                     Map<String, List<EduClass>> otherTeacherCourseList = allStaffDuplicateCourse
                                             .get(thisFreeTeacher.get(teacherCount));
-                                    // »ñÈ¡¸Ã½ÌÊ¦¸Ã°à¼¶µÄÉÏ¿Î°²ÅÅ
+                                    // è·å–è¯¥æ•™å¸ˆè¯¥ç­çº§çš„ä¸Šè¯¾å®‰æ’
                                     List<String> otherTeacherSchedule = new ArrayList<String>();
                                     for (int keyListLength = 0; keyListLength < keyList.length; keyListLength++) {
                                         if (otherTeacherCourseList.get(keyList[keyListLength]).contains(thisClass)) {
                                             otherTeacherSchedule.add(keyList[keyListLength]);
                                         }
                                     }
-                                    // »ñµÃ´ıµ÷¿Î³ÌÊ±¼ä
+                                    // è·å¾—å¾…è°ƒè¯¾ç¨‹æ—¶é—´
                                     Random rand = new Random();
                                     int randCourseNum = rand.nextInt(otherTeacherSchedule.size());
                                     String[] newOrder = otherTeacherSchedule.get(randCourseNum).split(",");
                                     int day = Integer.parseInt(newOrder[0]);
                                     int courseNum = Integer.parseInt(newOrder[1]);
-                                    // »ñµÃ³åÍ»¿Î³ÌÊ±¼ä
+                                    // è·å¾—å†²çªè¯¾ç¨‹æ—¶é—´
                                     String[] oldOrder = { Integer.toString(dayConf - 1), Integer.toString(j) };
                                     int oldDay = Integer.parseInt(oldOrder[0]);
                                     int oldCourseNum = Integer.parseInt(oldOrder[1]);
 
 
-                                    // µ÷»»¿Î³Ì
+                                    // è°ƒæ¢è¯¾ç¨‹
                                     for (int gradeCount = 0; gradeCount < gS.length; gradeCount++) {
                                         if (StringUtil.compareValue(gS[gradeCount].gradeId, thisClass.getNj()
                                                 .getGradeId())) {
@@ -1287,11 +1287,11 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                                                 if (StringUtil.compareValue(
                                                         gS[gradeCount].classSchedule[classCount].classId,
                                                         thisClass.getClassId())) {
-                                                    // ´ıµ÷¿Î³ÌcourseId
+                                                    // å¾…è°ƒè¯¾ç¨‹courseId
                                                     String newCourseId = gS[gradeCount].classSchedule[classCount].daySchedule[day].schedule[courseNum].courseId;
-                                                    // ³åÍ»¿Î³ÌcourseId
+                                                    // å†²çªè¯¾ç¨‹courseId
                                                     String oldCourseId = gS[gradeCount].classSchedule[classCount].daySchedule[oldDay].schedule[oldCourseNum].courseId;
-                                                    // ¶Ôµ÷
+                                                    // å¯¹è°ƒ
                                                     gS[gradeCount].classSchedule[classCount].daySchedule[day].schedule[courseNum].courseId = oldCourseId;
                                                     gS[gradeCount].classSchedule[classCount].daySchedule[oldDay].schedule[oldCourseNum].courseId = newCourseId;
                                                     gS[gradeCount].classSchedule[classCount].code = generateCode(
@@ -1323,7 +1323,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ¼ÆËã¸öÌå¸ß¼¶ÊÊÓ¦µÃ·Ö
+     * è®¡ç®—ä¸ªä½“é«˜çº§é€‚åº”å¾—åˆ†
      * 
      * @date 2015-6-23
      * @param individual
@@ -1336,7 +1336,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         int totalScore = 1;
 
 
-        // Í³¼ÆÒªÇóµÄ½ÌÊ¦Ã¿¸öÊ±¼ä¶ÎÉÏ¿ÎÊı
+        // ç»Ÿè®¡è¦æ±‚çš„æ•™å¸ˆæ¯ä¸ªæ—¶é—´æ®µä¸Šè¯¾æ•°
         Map<EduStaff, int[][]> staffDuplicateCourse = new HashMap<EduStaff, int[][]>();
         for (int staffNum = 0; staffNum < specialTeacher.size(); staffNum++) {
             int[][] a = new int[DAY_COUNT][LECTURE_COUNT];
@@ -1368,9 +1368,9 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                 }
             }
         }
-        // ¼ì²âÊÇ·ñ·ûºÏÒªÇó
+        // æ£€æµ‹æ˜¯å¦ç¬¦åˆè¦æ±‚
         for (int i = 0; i < specialTeacher.size(); i++) {
-            // ÊÇ·ñÓĞ¿Î±êÖ¾
+            // æ˜¯å¦æœ‰è¯¾æ ‡å¿—
             int hasCourseFlag = 0;
             String conf = groupStaffCourseTime.get(specialTeacher.get(i));
             int day = Integer.parseInt(conf.split("#")[0]);
@@ -1401,7 +1401,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ¼ÆËãÁªÌÃ¿ÎÊÊÓ¦µÃ·Ö
+     * è®¡ç®—è”å ‚è¯¾é€‚åº”å¾—åˆ†
      * 
      * @date 2015-6-23
      * @param individual
@@ -1415,7 +1415,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         int totalScore = 1;
 
 
-        // ¼ÆËãÃ¿¸öÄê¼¶Ã¿ÃÅ¿ÎÁªÌÃ¿Î´ÎÊı
+        // è®¡ç®—æ¯ä¸ªå¹´çº§æ¯é—¨è¯¾è”å ‚è¯¾æ¬¡æ•°
         GradeSchedule[] gS = gradeSchedule;
         Map<EduGrade, Map<String, Integer>> tmpCCourseNum = new HashMap<EduGrade, Map<String, Integer>>();
         for (int i = 0; i < gS.length; i++) {
@@ -1567,7 +1567,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ÁªÌÃ¿Î³åÍ»¼ì²â/ÅÅ³ı
+     * è”å ‚è¯¾å†²çªæ£€æµ‹/æ’é™¤
      * 
      * @date 2015-6-23
      * @param individual
@@ -1580,15 +1580,15 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             Map<EduStaff, String> groupStaffCourseTime) {
 
 
-        // ¼ÆËãÃ¿¸öÄê¼¶°à¼¶Ã¿ÃÅ¿ÎÁªÌÃ¿Î´ÎÊı
+        // è®¡ç®—æ¯ä¸ªå¹´çº§ç­çº§æ¯é—¨è¯¾è”å ‚è¯¾æ¬¡æ•°
         GradeSchedule[] gS = gradeSchedule;
         Map<EduGrade, Map<EduClass, Map<String, Integer>>> tmpCCourseNum = new HashMap<EduGrade, Map<EduClass, Map<String, Integer>>>();
         for (int i = 0; i < gS.length; i++) {
-            // Äê¼¶Map
+            // å¹´çº§Map
             EduGrade tmpGrade = gradeAndGradeId.get(gS[i].gradeId);
             Map<EduClass, Map<String, Integer>> gradeMap = new HashMap<EduClass, Map<String, Integer>>();
             for (int j = 0; j < gS[i].classSchedule.length; j++) {
-                // °à¼¶Map
+                // ç­çº§Map
                 EduClass tmpClass = classAndClassId.get(gS[i].classSchedule[j].classId);
                 Map<String, Integer> tmpClassMap = new HashMap<String, Integer>();
                 Map<String, Integer> allClassCourseMap = new HashMap<String, Integer>();
@@ -1712,7 +1712,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             }
             tmpCCourseNum.put(tmpGrade, gradeMap);
         }
-        // Í³¼Æ½ÌÊ¦Ã¿¸öÊ±¼ä¶ÎÉÏ¿ÎÊı
+        // ç»Ÿè®¡æ•™å¸ˆæ¯ä¸ªæ—¶é—´æ®µä¸Šè¯¾æ•°
         Map<EduStaff, Map<String, List<EduClass>>> staffDuplicateCourse = new HashMap<EduStaff, Map<String, List<EduClass>>>();
         for (int staffNum = 0; staffNum < scheduleStaff.size(); staffNum++) {
             Map<String, List<EduClass>> tempMap = new HashMap<String, List<EduClass>>();
@@ -1744,7 +1744,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         }
 
 
-        // »ñµÃÃ¿¸öÊ±¼ä¶Î¿ÕÏĞ½ÌÊ¦
+        // è·å¾—æ¯ä¸ªæ—¶é—´æ®µç©ºé—²æ•™å¸ˆ
         Map<String, List<EduStaff>> freeTeacher = new HashMap<String, List<EduStaff>>();
 
 
@@ -1779,7 +1779,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
         }
-        // ³åÍ»¼ì²â ÅÅ³ı
+        // å†²çªæ£€æµ‹ æ’é™¤
 
 
         for (int i = 0; i < gS.length; i++) {
@@ -1792,23 +1792,23 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                     Iterator<Map.Entry<String, Integer>> idealCCEntries = idealCC.entrySet().iterator();
                     while (idealCCEntries.hasNext()) {
                         Map.Entry<String, Integer> entry = idealCCEntries.next();
-                        // Èç¹ûÎ´ÕÒµ½ÁªÌÃ¿Î
+                        // å¦‚æœæœªæ‰¾åˆ°è”å ‚è¯¾
                         if (realCC.get(entry.getKey()) == 0
                                 && (scheduleConf.get(tmpClass).courseTime.get(Integer.parseInt(entry.getKey())) != null)) {
-                            // ½â¾ö±êÖ¾
+                            // è§£å†³æ ‡å¿—
                             int rFlag = 1;
-                            // ¸ÃÃÅ¿Î¿Î³ÌÂë
+                            // è¯¥é—¨è¯¾è¯¾ç¨‹ç 
                             String thisCourse = entry.getKey();
-                            // ¸Ã¿ÎCourseTeacher
+                            // è¯¥è¯¾CourseTeacher
                             CourseTeacher thisCT = findCourseTeacherFromCTList(scheduleJoint,
                                     gS[i].classSchedule[j].classId, Integer.parseInt(thisCourse));
-                            // ¸Ã½ÌÊ¦
+                            // è¯¥æ•™å¸ˆ
                             EduStaff thisTeacher = thisCT.getStaff();
-                            // ½ÌÑĞ×é²»ÅÅ¿Î²ÎÊı
+                            // æ•™ç ”ç»„ä¸æ’è¯¾å‚æ•°
                             int[] groupConf = new int[2];
-                            // ÊÇ·ñÍ¬Ê±½øĞĞ½ÌÑĞ×é²»ÅÅ¿ÎÉèÖÃ
+                            // æ˜¯å¦åŒæ—¶è¿›è¡Œæ•™ç ”ç»„ä¸æ’è¯¾è®¾ç½®
                             if (advConf == 1) {
-                                // ¸Ã½ÌÊ¦ÊÇ·ñÔÚ½ÌÑĞ×é²»ÅÅ¿ÎÇåµ¥ÖĞ
+                                // è¯¥æ•™å¸ˆæ˜¯å¦åœ¨æ•™ç ”ç»„ä¸æ’è¯¾æ¸…å•ä¸­
                                 if (groupStaffCourseTime.containsKey(thisTeacher)) {
                                     groupConf[0] = Integer
                                             .parseInt(groupStaffCourseTime.get(thisTeacher).split("#")[0]);
@@ -1818,7 +1818,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
                             }
-                            // µÃµ½ËùÓĞ¸ÃÃÅ¿ÎµÄÉÏ¿ÎÊ±¼ä
+                            // å¾—åˆ°æ‰€æœ‰è¯¥é—¨è¯¾çš„ä¸Šè¯¾æ—¶é—´
                             List<String> courseTime = new ArrayList<String>();
                             for (int dayCount = 0; dayCount < DAY_COUNT; dayCount++) {
                                 for (int lectureCount = 0; lectureCount < LECTURE_COUNT; lectureCount++) {
@@ -1837,7 +1837,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                                     }
                                 }
                             }
-                            // µÃµ½ËùÓĞ¸ÃÃÅ¿ÎµÄÉÏÏÂ½Ú¿ÎµÄÉÏ¿ÎÊ±¼ä(Èç¹ûÓĞ)
+                            // å¾—åˆ°æ‰€æœ‰è¯¥é—¨è¯¾çš„ä¸Šä¸‹èŠ‚è¯¾çš„ä¸Šè¯¾æ—¶é—´(å¦‚æœæœ‰)
                             List<String[]> prvNextCourseTime = new ArrayList<String[]>();
                             for (int dayCount = 0; dayCount < DAY_COUNT; dayCount++) {
                                 for (int lectureCount = 0; lectureCount < LECTURE_COUNT; lectureCount++) {
@@ -1915,7 +1915,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                                     }
                                 }
                             }
-                            // µÃµ½ËùÓĞ¸ÃÃÅ¿ÎµÄÉÏÏÂ½Ú¿ÎµÄ¿Î³Ì£¨Èç¹ûÓĞ£©
+                            // å¾—åˆ°æ‰€æœ‰è¯¥é—¨è¯¾çš„ä¸Šä¸‹èŠ‚è¯¾çš„è¯¾ç¨‹ï¼ˆå¦‚æœæœ‰ï¼‰
                             List<String[]> prvNextCourseCode = new ArrayList<String[]>();
                             for (int dayCount = 0; dayCount < DAY_COUNT; dayCount++) {
                                 for (int lectureCount = 0; lectureCount < LECTURE_COUNT; lectureCount++) {
@@ -1996,41 +1996,41 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                             if (prvNextCourseTime.size() != prvNextCourseCode.size()) {
                                 System.out.println("222");
                             }
-                            // ¼ì²âËùÓĞ¸ÃÃÅ¿ÎµÄÉÏÏÂ½Ú¿Îa£¬ÁªÌÃ¿ÎµÄÀÏÊ¦ÊÇ·ñÓĞ¿Õ¡£Èç¹ûÓĞ¿Õ£¬aÔ­½ÌÊ¦µÄ¿ÕÏĞÊÇ·ñÓëÁªÌÃ¿ÎÀÏÊ¦Ëù´ø¸Ã°à¿Î³ÌÓĞ½»¼¯
+                            // æ£€æµ‹æ‰€æœ‰è¯¥é—¨è¯¾çš„ä¸Šä¸‹èŠ‚è¯¾aï¼Œè”å ‚è¯¾çš„è€å¸ˆæ˜¯å¦æœ‰ç©ºã€‚å¦‚æœæœ‰ç©ºï¼ŒaåŸæ•™å¸ˆçš„ç©ºé—²æ˜¯å¦ä¸è”å ‚è¯¾è€å¸ˆæ‰€å¸¦è¯¥ç­è¯¾ç¨‹æœ‰äº¤é›†
                             for (int pnCourseCount = 0; pnCourseCount < prvNextCourseTime.size(); pnCourseCount++) {
-                                // Èç¹ûÇ°Ò»½Ú¿Î²»Îª¿Õ£¬Ôò²éÕÒÇ°Ò»½Ú¿ÎµÄ¿ÕÏĞÀÏÊ¦
+                                // å¦‚æœå‰ä¸€èŠ‚è¯¾ä¸ä¸ºç©ºï¼Œåˆ™æŸ¥æ‰¾å‰ä¸€èŠ‚è¯¾çš„ç©ºé—²è€å¸ˆ
                                 if (prvNextCourseTime.get(pnCourseCount)[0] != null) {
                                     List<EduStaff> tmpFTList = freeTeacher.get(prvNextCourseTime.get(pnCourseCount)[0]);
-                                    // Èç¹û¿ÕÏĞ½ÌÊ¦ÁĞ±í²»Îª¿Õ
+                                    // å¦‚æœç©ºé—²æ•™å¸ˆåˆ—è¡¨ä¸ä¸ºç©º
                                     if (tmpFTList != null) {
-                                        // Èç¹û¿ÕÏĞ½ÌÊ¦ÁĞ±íÖĞÓĞ¸Ã½ÌÊ¦a£¬Ôò»ñÈ¡Ç°Ò»½Ú¿ÎµÄ½ÌÊ¦b
+                                        // å¦‚æœç©ºé—²æ•™å¸ˆåˆ—è¡¨ä¸­æœ‰è¯¥æ•™å¸ˆaï¼Œåˆ™è·å–å‰ä¸€èŠ‚è¯¾çš„æ•™å¸ˆb
                                         if (tmpFTList.contains(thisTeacher)) {
                                             EduStaff readyTeacher = findCourseTeacherFromCTList(scheduleJoint,
                                                     gS[i].classSchedule[j].classId,
                                                     Integer.parseInt(prvNextCourseCode.get(pnCourseCount)[0]))
                                                     .getStaff();
-                                            // ±éÀú¸Ã½Ú¿ÎÉÏ¿ÎÊ±¼ä£¬ÅĞ¶Ï¿Õ¼ä½ÌÊ¦ÁĞ±íÊÇ·ñÓĞ½ÌÊ¦b
+                                            // éå†è¯¥èŠ‚è¯¾ä¸Šè¯¾æ—¶é—´ï¼Œåˆ¤æ–­ç©ºé—´æ•™å¸ˆåˆ—è¡¨æ˜¯å¦æœ‰æ•™å¸ˆb
                                             for (int thisCourseCount = 0; thisCourseCount < courseTime.size(); thisCourseCount++) {
                                                 List<EduStaff> tmpFTList2 = freeTeacher.get(courseTime
                                                         .get(thisCourseCount));
                                                 if (tmpFTList2.contains(readyTeacher)) {
-                                                    // »ñµÃ´ıµ÷¿Î³ÌÊ±¼ä
+                                                    // è·å¾—å¾…è°ƒè¯¾ç¨‹æ—¶é—´
                                                     String[] newOrder = prvNextCourseTime.get(pnCourseCount)[0]
                                                             .split(",");
                                                     int day = Integer.parseInt(newOrder[0]);
                                                     int courseNum = Integer.parseInt(newOrder[1]);
-                                                    // »ñµÃ³åÍ»¿Î³ÌÊ±¼ä
+                                                    // è·å¾—å†²çªè¯¾ç¨‹æ—¶é—´
                                                     String[] oldOrder = courseTime.get(thisCourseCount).split(",");
                                                     int oldDay = Integer.parseInt(oldOrder[0]);
                                                     int oldCourseNum = Integer.parseInt(oldOrder[1]);
-                                                    // ´ıµ÷¿Î³ÌcourseId
+                                                    // å¾…è°ƒè¯¾ç¨‹courseId
                                                     if (gS[i].classSchedule[j].daySchedule[day].schedule[courseNum] == null) {
                                                         System.out.println("1111");
                                                     }
                                                     String newCourseId = gS[i].classSchedule[j].daySchedule[day].schedule[courseNum].courseId;
-                                                    // ³åÍ»¿Î³ÌcourseId
+                                                    // å†²çªè¯¾ç¨‹courseId
                                                     String oldCourseId = gS[i].classSchedule[j].daySchedule[oldDay].schedule[oldCourseNum].courseId;
-                                                    // ¶Ôµ÷
+                                                    // å¯¹è°ƒ
                                                     gS[i].classSchedule[j].daySchedule[day].schedule[courseNum].courseId = oldCourseId;
                                                     gS[i].classSchedule[j].daySchedule[oldDay].schedule[oldCourseNum].courseId = newCourseId;
                                                     gS[i].classSchedule[j].code = generateCode(gS[i].classSchedule[j],
@@ -2042,39 +2042,39 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
                                         }
                                     }
                                 }
-                                // Èç¹ûºóÒ»½Ú¿Î²»Îª¿Õ£¬Ôò²éÕÒºóÒ»½Ú¿ÎµÄ¿ÕÏĞÀÏÊ¦
+                                // å¦‚æœåä¸€èŠ‚è¯¾ä¸ä¸ºç©ºï¼Œåˆ™æŸ¥æ‰¾åä¸€èŠ‚è¯¾çš„ç©ºé—²è€å¸ˆ
                                 else if (prvNextCourseTime.get(pnCourseCount)[0] != null) {
                                     List<EduStaff> tmpFTList = freeTeacher.get(prvNextCourseTime.get(pnCourseCount)[0]);
-                                    // Èç¹û¿ÕÏĞ½ÌÊ¦ÁĞ±í²»Îª¿Õ
+                                    // å¦‚æœç©ºé—²æ•™å¸ˆåˆ—è¡¨ä¸ä¸ºç©º
                                     if (tmpFTList != null) {
-                                        // Èç¹û¿ÕÏĞ½ÌÊ¦ÁĞ±íÖĞÓĞ¸Ã½ÌÊ¦a£¬Ôò»ñÈ¡ºóÒ»½Ú¿ÎµÄ½ÌÊ¦b
+                                        // å¦‚æœç©ºé—²æ•™å¸ˆåˆ—è¡¨ä¸­æœ‰è¯¥æ•™å¸ˆaï¼Œåˆ™è·å–åä¸€èŠ‚è¯¾çš„æ•™å¸ˆb
                                         if (tmpFTList.contains(thisTeacher)) {
                                             EduStaff readyTeacher = findCourseTeacherFromCTList(scheduleJoint,
                                                     gS[i].classSchedule[j].classId,
                                                     Integer.parseInt(prvNextCourseCode.get(pnCourseCount)[0]))
                                                     .getStaff();
-                                            // ±éÀú¸Ã½Ú¿ÎÉÏ¿ÎÊ±¼ä£¬ÅĞ¶Ï¿Õ¼ä½ÌÊ¦ÁĞ±íÊÇ·ñÓĞ½ÌÊ¦b
+                                            // éå†è¯¥èŠ‚è¯¾ä¸Šè¯¾æ—¶é—´ï¼Œåˆ¤æ–­ç©ºé—´æ•™å¸ˆåˆ—è¡¨æ˜¯å¦æœ‰æ•™å¸ˆb
                                             for (int thisCourseCount = 0; thisCourseCount < courseTime.size(); thisCourseCount++) {
                                                 List<EduStaff> tmpFTList2 = freeTeacher.get(courseTime
                                                         .get(thisCourseCount));
                                                 if (tmpFTList2.contains(readyTeacher)) {
-                                                    // »ñµÃ´ıµ÷¿Î³ÌÊ±¼ä
+                                                    // è·å¾—å¾…è°ƒè¯¾ç¨‹æ—¶é—´
                                                     String[] newOrder = prvNextCourseTime.get(pnCourseCount)[0]
                                                             .split(",");
                                                     int day = Integer.parseInt(newOrder[0]);
                                                     int courseNum = Integer.parseInt(newOrder[1]);
-                                                    // »ñµÃ³åÍ»¿Î³ÌÊ±¼ä
+                                                    // è·å¾—å†²çªè¯¾ç¨‹æ—¶é—´
                                                     String[] oldOrder = courseTime.get(thisCourseCount).split(",");
                                                     int oldDay = Integer.parseInt(oldOrder[0]);
                                                     int oldCourseNum = Integer.parseInt(oldOrder[1]);
-                                                    // ´ıµ÷¿Î³ÌcourseId
+                                                    // å¾…è°ƒè¯¾ç¨‹courseId
                                                     if (gS[i].classSchedule[j].daySchedule[day].schedule[courseNum] == null) {
                                                         System.out.println("1111");
                                                     }
                                                     String newCourseId = gS[i].classSchedule[j].daySchedule[day].schedule[courseNum].courseId;
-                                                    // ³åÍ»¿Î³ÌcourseId
+                                                    // å†²çªè¯¾ç¨‹courseId
                                                     String oldCourseId = gS[i].classSchedule[j].daySchedule[oldDay].schedule[oldCourseNum].courseId;
-                                                    // ¶Ôµ÷
+                                                    // å¯¹è°ƒ
                                                     gS[i].classSchedule[j].daySchedule[day].schedule[courseNum].courseId = oldCourseId;
                                                     gS[i].classSchedule[j].daySchedule[oldDay].schedule[oldCourseNum].courseId = newCourseId;
                                                     gS[i].classSchedule[j].code = generateCode(gS[i].classSchedule[j],
@@ -2102,7 +2102,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ³åÍ»¼ì²â/ÅÅ³ı
+     * å†²çªæ£€æµ‹/æ’é™¤
      * 
      * @date 2015-7-4
      * @param gradeSchedule
@@ -2119,7 +2119,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
             Map<String, EduClass> classAndClassId, Map<EduClass, ClassScheduleConf> scheduleConf) {
 
 
-        // Í³¼Æ½ÌÊ¦Ã¿¸öÊ±¼ä¶ÎÉÏ¿ÎÊı
+        // ç»Ÿè®¡æ•™å¸ˆæ¯ä¸ªæ—¶é—´æ®µä¸Šè¯¾æ•°
         Map<EduStaff, Map<String, List<EduClass>>> staffDuplicateCourse = new HashMap<EduStaff, Map<String, List<EduClass>>>();
         for (int staffNum = 0; staffNum < scheduleStaff.size(); staffNum++) {
             Map<String, List<EduClass>> tempMap = new HashMap<String, List<EduClass>>();
@@ -2152,7 +2152,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         }
 
 
-        // »ñµÃÃ¿¸öÊ±¼ä¶Î¿ÕÏĞ½ÌÊ¦
+        // è·å¾—æ¯ä¸ªæ—¶é—´æ®µç©ºé—²æ•™å¸ˆ
         Map<String, List<EduStaff>> freeTeacher = new HashMap<String, List<EduStaff>>();
 
 
@@ -2189,62 +2189,62 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
         }
 
 
-        // ³åÍ»¼ì²â/ÅÅ³ı
+        // å†²çªæ£€æµ‹/æ’é™¤
         for (int staffNum = 0; staffNum < scheduleStaff.size(); staffNum++) {
 
 
             Map<String, List<EduClass>> tempTeacherHaveClass = staffDuplicateCourse.get(scheduleStaff.get(staffNum));
             for (int i = 0; i < keyList.length; i++) {
                 List<EduClass> tempClass = tempTeacherHaveClass.get(keyList[i]);
-                // Èç¹û´æÔÚ³åÍ»
+                // å¦‚æœå­˜åœ¨å†²çª
                 if (tempClass.size() > 1) {
-                    // »ñÈ¡³åÍ»µÄµÚÒ»¸ö°à¼¶
+                    // è·å–å†²çªçš„ç¬¬ä¸€ä¸ªç­çº§
                     EduClass thisClass = tempClass.get(0);
-                    // »ñÈ¡¸Ã³åÍ»Ê±¼ä¿ÕÏĞµÄ½ÌÊ¦
+                    // è·å–è¯¥å†²çªæ—¶é—´ç©ºé—²çš„æ•™å¸ˆ
                     List<EduStaff> thisFreeTeacher = freeTeacher.get(keyList[i]);
-                    // ÉèÖÃ³åÍ»½â¾öflag
+                    // è®¾ç½®å†²çªè§£å†³flag
                     int doneFlag = 0;
-                    // Öğ¸ö¼ì²â¿ÕÏĞ½ÌÊ¦Ëù´ø°à¼¶ÊÇ·ñÓĞ¸Ã°à
+                    // é€ä¸ªæ£€æµ‹ç©ºé—²æ•™å¸ˆæ‰€å¸¦ç­çº§æ˜¯å¦æœ‰è¯¥ç­
                     for (int teacherCount = 0; teacherCount < thisFreeTeacher.size(); teacherCount++) {
                         if (doneFlag == 0) {
-                            // ÈôÎª¸Ã°à½ÌÊ¦
+                            // è‹¥ä¸ºè¯¥ç­æ•™å¸ˆ
                             if (teacherClass.get(thisFreeTeacher.get(teacherCount)).contains(thisClass)) {
-                                // »ñÈ¡¸Ã½ÌÊ¦ÉÏ¿Î°²ÅÅMap
+                                // è·å–è¯¥æ•™å¸ˆä¸Šè¯¾å®‰æ’Map
 
 
                                 Map<String, List<EduClass>> otherTeacherCourseList = staffDuplicateCourse
                                         .get(thisFreeTeacher.get(teacherCount));
-                                // »ñÈ¡¸Ã½ÌÊ¦¸Ã°à¼¶µÄÉÏ¿Î°²ÅÅ
+                                // è·å–è¯¥æ•™å¸ˆè¯¥ç­çº§çš„ä¸Šè¯¾å®‰æ’
                                 List<String> otherTeacherSchedule = new ArrayList<String>();
                                 for (int keyListLength = 0; keyListLength < keyList.length; keyListLength++) {
                                     if (otherTeacherCourseList.get(keyList[keyListLength]).contains(thisClass)) {
                                         otherTeacherSchedule.add(keyList[keyListLength]);
                                     }
                                 }
-                                // »ñµÃ´ıµ÷¿Î³ÌÊ±¼ä
+                                // è·å¾—å¾…è°ƒè¯¾ç¨‹æ—¶é—´
                                 Random rand = new Random();
                                 int randCourseNum = rand.nextInt(otherTeacherSchedule.size());
                                 String[] newOrder = otherTeacherSchedule.get(randCourseNum).split(",");
                                 int day = Integer.parseInt(newOrder[0]);
                                 int courseNum = Integer.parseInt(newOrder[1]);
-                                // »ñµÃ³åÍ»¿Î³ÌÊ±¼ä
+                                // è·å¾—å†²çªè¯¾ç¨‹æ—¶é—´
                                 String[] oldOrder = keyList[i].split(",");
                                 int oldDay = Integer.parseInt(oldOrder[0]);
                                 int oldCourseNum = Integer.parseInt(oldOrder[1]);
 
 
-                                // µ÷»»¿Î³Ì
+                                // è°ƒæ¢è¯¾ç¨‹
                                 for (int gradeCount = 0; gradeCount < gS.length; gradeCount++) {
                                     if (StringUtil.compareValue(gS[gradeCount].gradeId, thisClass.getNj().getGradeId())) {
                                         for (int classCount = 0; classCount < gS[gradeCount].classSchedule.length; classCount++) {
                                             if (StringUtil.compareValue(
                                                     gS[gradeCount].classSchedule[classCount].classId,
                                                     thisClass.getClassId())) {
-                                                // ´ıµ÷¿Î³ÌcourseId
+                                                // å¾…è°ƒè¯¾ç¨‹courseId
                                                 String newCourseId = gS[gradeCount].classSchedule[classCount].daySchedule[day].schedule[courseNum].courseId;
-                                                // ³åÍ»¿Î³ÌcourseId
+                                                // å†²çªè¯¾ç¨‹courseId
                                                 String oldCourseId = gS[gradeCount].classSchedule[classCount].daySchedule[oldDay].schedule[oldCourseNum].courseId;
-                                                // ¶Ôµ÷
+                                                // å¯¹è°ƒ
                                                 gS[gradeCount].classSchedule[classCount].daySchedule[day].schedule[courseNum].courseId = oldCourseId;
                                                 gS[gradeCount].classSchedule[classCount].daySchedule[oldDay].schedule[oldCourseNum].courseId = newCourseId;
                                                 gS[gradeCount].classSchedule[classCount].code = generateCode(
@@ -2274,7 +2274,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * Éú³É»ùÒò
+     * ç”ŸæˆåŸºå› 
      * 
      * @param classSchedule
      * @param thisScheduleConf
@@ -2296,7 +2296,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
 
 
     /**
-     * ´ÓCTListÖĞÑ°ÕÒCourseTeacher
+     * ä»CTListä¸­å¯»æ‰¾CourseTeacher
      * 
      * @param scheduleJoint
      * @param classId
@@ -2304,8 +2304,8 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
      * @return
      */
     private CourseTeacher findCourseTeacherFromCTList(List<CourseTeacher> scheduleJoint, String classId, int course) {
-        int flag = 0;// ÊÇ·ñÕÒµ½±êÖ¾
-        int index = 0; // ¼ÆÊı
+        int flag = 0;// æ˜¯å¦æ‰¾åˆ°æ ‡å¿—
+        int index = 0; // è®¡æ•°
         CourseTeacher result = new CourseTeacher();
         while (flag == 0) {
             if (StringUtil.compareValue(scheduleJoint.get(index).getEduClass().getClassId(), classId)
@@ -2319,7 +2319,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
     }
 
 
-    // µ¥½Ú¿Î°²ÅÅ
+    // å•èŠ‚è¯¾å®‰æ’
     public class Schedule {
 
 
@@ -2356,7 +2356,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
     }
 
 
-    // ÈÕ°²ÅÅ
+    // æ—¥å®‰æ’
     public class DaySchedule {
 
 
@@ -2395,7 +2395,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
     }
 
 
-    // °à¼¶°²ÅÅ
+    // ç­çº§å®‰æ’
     public class ClassSchedule {
 
 
@@ -2447,7 +2447,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
     }
 
 
-    // Äê¼¶°²ÅÅ
+    // å¹´çº§å®‰æ’
     public class GradeSchedule {
 
 
@@ -2486,7 +2486,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
     }
 
 
-    // ¸öÌå
+    // ä¸ªä½“
     public class Individual {
 
 
@@ -2525,7 +2525,7 @@ public class ScheduleServiceImpl extends BaseServiceImpl implements ScheduleServ
     }
 
 
-    // °à¼¶ÅÅ¿Î²ÎÊı
+    // ç­çº§æ’è¯¾å‚æ•°
     public class ClassScheduleConf {
 
 
